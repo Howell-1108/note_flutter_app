@@ -1,6 +1,10 @@
+import 'dart:ffi';
+
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:note_flutter_app/AccountDB.dart';
 import 'package:note_flutter_app/AddNote.dart';
+import 'DetailNote.dart';
 import 'DrawerChart.dart';
 import 'dart:async';
 
@@ -64,6 +68,14 @@ class _MyHomePageState extends State<MyHomePage> with SingleTickerProviderStateM
         appBar: AppBar(
           title: Text("Notebook"),
         ),
+        floatingActionButton: FloatingActionButton(
+          child: Icon(Icons.add),
+          onPressed: (){
+            Navigator.of(context).push(MaterialPageRoute(
+              builder: (context) => AddNote()
+            ));
+          },
+        ),
         body: StreamBuilder(
           stream: _streamController.stream,
           builder: (BuildContext context, AsyncSnapshot snapshot) {
@@ -71,8 +83,29 @@ class _MyHomePageState extends State<MyHomePage> with SingleTickerProviderStateM
               return ListView(
                 children: snapshot.data.map<Widget>((document) {
                   return ListTile(
-                    title: Text(document['title']),
-                    subtitle: Text(document['title']),
+                    onTap: (){
+                      Navigator.of(context).push(MaterialPageRoute(
+                          builder: (context) => NoteDetail(
+                              document["id"].toString(),
+                              document["type"],
+                              document["title"],
+                              document["notebook"],
+                              document["position"],
+                              document["time_create"],
+                              document["time_modify"]
+                          )
+                      ));
+                    },
+                    title: Text(
+                      document['title'],
+                      style: TextStyle(
+                        fontSize: 33.0,
+                        fontWeight: FontWeight.w400,
+                      ),
+                    ),
+                    subtitle: Text("最近修改"+document['time_modify']+"\n创建时间"+document['time_create'],style: TextStyle(
+                      fontSize: 9.0,),),
+                    trailing: Icon(Icons.more_horiz),
                   );
                 }).toList(),
               );

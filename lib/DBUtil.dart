@@ -86,11 +86,9 @@ class DBUtil {
 
   //打开DB
   open() async {
-    print('XXXXXXXXXXXXXXXXXXXXXXX34324234XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX');
     String databasePath = await getDatabasesPath();
     String path = join(databasePath,Constants.DB_NAME);
     print('数据库存储路径path:'+path);
-    print('XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX');
     try {
        db = await openDatabase(path);
        print('DB open');

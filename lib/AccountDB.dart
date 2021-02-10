@@ -17,6 +17,7 @@ void insertData(int item_type, String item_title, String item_notebook, String i
 async {
   await dbUtil.open();
   Map<String,Object> par = Map<String,Object>();
+
   par['type'] = item_type.toString();
   par['title'] = item_title;
  // par['moneyValue'] = item_moneyValue.toString();
@@ -46,14 +47,14 @@ void deleteSingle(int id) async{
   queryData();
 }
 
-void update(String _id, String _type, String _title, String _notebook, String _position, String _time_modify) async{
+void update(String _id, int _type, String _title, String _notebook, String _position) async{
   await dbUtil.open();
   Map<String,Object> par = Map<String,Object>();
-  if(_type!=null){par['type']=_type;}
-  if(_title!=null){par['name']=_title;}
-  if(_notebook!=null){par['notebook']=_notebook;}
-  if(_position!=null){par['position']=_position;}
-  if(_time_modify!=null){par['time_modify']=_time_modify;}
+  par['type']=_type;
+  par['title']=_title;
+  par['notebook']=_notebook;
+  par['position']=_position;
+  par['time_modify']=DateTime.now().toString().substring(0,19);
   print(_id);
   dbUtil.updateByHelper('relation', par, 'id=?', [int.parse(_id)]);
   await dbUtil.close();
