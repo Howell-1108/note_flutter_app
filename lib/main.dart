@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:note_flutter_app/AccountDB.dart';
 import 'package:note_flutter_app/AddNote.dart';
+import 'package:note_flutter_app/DustbinNote.dart';
 import 'DetailNote.dart';
 import 'DrawerChart.dart';
 import 'dart:async';
@@ -47,7 +48,8 @@ class _MyHomePageState extends State<MyHomePage> with SingleTickerProviderStateM
     initDB();
     getData();
     queryData();
-    _timer = Timer.periodic(Duration(seconds: 2), (timer) => getData());
+    //queryDeleteData();
+    _timer = Timer.periodic(Duration(seconds: 1), (timer) => getData());
    // queryData();
   }
   //初始化
@@ -66,7 +68,17 @@ class _MyHomePageState extends State<MyHomePage> with SingleTickerProviderStateM
       length: 3,
       child: Scaffold(
         appBar: AppBar(
-          title: Text("Notebook"),
+          actions: <Widget>[
+            IconButton(
+              icon: Icon(Icons.delete_outline),
+              onPressed: (){
+                Navigator.of(context).push(MaterialPageRoute(
+                    builder: (context) => DustbinNote()
+                ));
+              },
+            )
+          ],
+          title: Text("记事本"),
         ),
         floatingActionButton: FloatingActionButton(
           child: Icon(Icons.add),

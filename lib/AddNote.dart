@@ -40,7 +40,7 @@ class FormDemoState extends State<AddNote> {
                 onPressed: (){
                   submitNotebook();
                   Navigator.pop(context);
-                  //Navigator.of(context).pop("");
+                  Navigator.of(context).pop("");
                 },
               ),
               FlatButton(

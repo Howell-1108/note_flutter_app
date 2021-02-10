@@ -3,6 +3,7 @@ import 'DBUtil.dart';
 import 'TablesInit.dart';
 
 List<Map> dataList = List<Map>();
+List<Map> dataListDelete = List<Map>();
 List<Map> dataGroupList = List<Map>();
 DBUtil dbUtil = null;
 
@@ -67,8 +68,27 @@ void  queryData() async{
   print('data：$data');
   dataList = data;
   await dbUtil.close();
+
+  //Future.delayed(Duration(seconds: 1));
+
+  // await dbUtil.open();
+  // List<Map> dataDelete = await dbUtil.queryList("SELECT * FROM relation WHERE type=1");
+  // print('\n\n\ndataDelete：$dataDelete');
+  // dataListDelete = dataDelete;
+  // await dbUtil.close();
+
   return  ;
 }
+
+void  queryDeleteData() async{
+  await dbUtil.open();
+  List<Map> dataDelete = await dbUtil.queryList("SELECT * FROM relation WHERE type=1");
+  print('\n\n\ndataDelete：$dataDelete');
+  dataListDelete = dataDelete;
+  await dbUtil.close();
+  return  ;
+}
+
 void queryOrderCreatePositive() async{
   await dbUtil.open();
   List<Map> data = await dbUtil.queryOrderByHelper("relation",["*"],null,null,null,'time_create ASC');

@@ -56,9 +56,34 @@ class NoteDetailState extends State<NoteDetail> {
               child: Text('确定'),
               onPressed: (){
                 submitNotebook();
-                print("##############DetailNote_Submit_Test##################");
                 Navigator.pop(context);
-                //Navigator.of(context).pop("");
+                Navigator.of(context).pop("");
+              },
+            ),
+            FlatButton(
+              child: Text('取消'),
+              onPressed: (){Navigator.pop(context);},
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  _openAlertDeleteDialog(){
+    showDialog(
+      context: context,
+      builder: (BuildContext context){
+        return AlertDialog(
+          title: Text('删除'),
+          content: Text('确定要删除吗'),
+          actions: <Widget>[
+            FlatButton(
+              child: Text('确定'),
+              onPressed: (){
+                update(id, 1, title, notebook, position);
+                Navigator.pop(context);
+                Navigator.of(context).pop("");
               },
             ),
             FlatButton(
@@ -97,6 +122,12 @@ class NoteDetailState extends State<NoteDetail> {
             onPressed: (){_openAlertDialog();},
           )
         ],
+      ),
+      floatingActionButton: FloatingActionButton(
+        child: Icon(Icons.delete),
+        onPressed: (){
+          _openAlertDeleteDialog();
+        },
       ),
       body:SingleChildScrollView(
         child: Container(
