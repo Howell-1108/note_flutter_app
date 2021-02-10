@@ -58,7 +58,7 @@ class TablesInit{
     List tableMaps = await db.rawQuery('SELECT name FROM sqlite_master WHERE type = "table"');
     print('tableMaps:'+tableMaps.toString());
     tableMaps.forEach((item){
-      existingTables.add(item['name']);
+      existingTables.add(item['title']);
     });
     tableNames.forEach((tableName){
       if(!existingTables.contains(tableName)){

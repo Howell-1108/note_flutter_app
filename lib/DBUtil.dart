@@ -1,6 +1,5 @@
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
-import 'CreateTableSqls.dart';
 import 'Constants.dart' as Constants;
 
 ///sqflite数据库操作工具类
@@ -47,10 +46,6 @@ class DBUtil {
 
   ///sql助手修改
   Future<int> updateByHelper(String tableName,Map<String,Object> setArgs,String whereStr,List whereArgs) async {
-  //样例：
-  //Map<String,Object> par = Map<String,Object>();
-  //par['fuid'] = 1;
-  //dbUtil.updateByHelper('relation', par, 'type=? and uid=?', [0,5]);
    return await db.update(
         tableName, 
         setArgs,
@@ -80,40 +75,22 @@ class DBUtil {
 
   ///获取Batch对象，用于执行sql批处理
   Future<Batch> getBatch() async{
-    //调用样例
-    //  Batch batch = await DBUtil().getBatch();
-    //  batch.insert('Test', {'name': 'item'});
-    //  batch.update('Test', {'name': 'new_item'}, where: 'name = ?', whereArgs: ['item']);
-    //  batch.delete('Test', where: 'name = ?', whereArgs: ['item']);
-    //  List<Object> results = await batch.commit();  //返回的是id数组
-    //                         //batch.commit(noResult: true);//noResult: true不关心返回结果，性能高
-    //                         //batch.commit(continueOnError: true)//continueOnError: true  忽略错误，错误可继续执行
-    return db.batch();
+      return db.batch();
   }
 
   ///事务控制
   Future<dynamic> transaction(Future<dynamic> Function(Transaction txn) action)async{
-    //调用样例
-    //  try {
-    //     await dbUtil.transaction((txn) async {
-    //        Map<String,Object> par = Map<String,Object>();
-    //        par['uid'] = Random().nextInt(10); par['fuid'] = Random().nextInt(10);
-    //        par['type'] = Random().nextInt(2); par['id'] = 1;
-    //        var a = await txn.insert('relation', par);
-    //        var b = await txn.insert('relation', par);
-    //   });
-    //   } catch (e) {
-    //     print('sql异常:$e');
-    //   }
      return await db.transaction(action);
   }
   
 
   //打开DB
   open() async {
+    print('XXXXXXXXXXXXXXXXXXXXXXX34324234XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX');
     String databasePath = await getDatabasesPath();
     String path = join(databasePath,Constants.DB_NAME);
     print('数据库存储路径path:'+path);
+    print('XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX');
     try {
        db = await openDatabase(path);
        print('DB open');

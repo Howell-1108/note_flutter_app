@@ -10,29 +10,35 @@ void initDB() async {
   TablesInit tables = TablesInit();
   tables.init();
   dbUtil = new DBUtil();
-  querygroupby();
+  //querygroupby();
 }
 
-void insertData(int item_type, String item_name, Decimal item_moneyValue, String item_description)
+void insertData(int item_type, String item_title, String item_notebook, String item_position)
 async {
   await dbUtil.open();
   Map<String,Object> par = Map<String,Object>();
   par['type'] = item_type.toString();
-  par['name'] = item_name;
-  par['moneyValue'] = item_moneyValue.toString();
-  par['time'] = DateTime.now().toString().substring(0,10);
-  par['description'] = item_description;
+  par['title'] = item_title;
+ // par['moneyValue'] = item_moneyValue.toString();
+  par['time_modify'] = DateTime.now().toString().substring(0,19);
+  par['time_create'] = DateTime.now().toString().substring(0,19);
+  par['notebook'] = item_notebook;
+  par['position'] = item_position;
+  print(par);
+
   int flag = await dbUtil.insertByHelper('relation', par);
   print('flag:$flag');
   await dbUtil.close();
   queryData();
 }
+
 void delete() async{
   await dbUtil.open();
   dbUtil.delete('DELETE FROM relation', null);
   await dbUtil.close();
   queryData();
 }
+
 void deleteSingle(int id) async{
   await dbUtil.open();
   dbUtil.deleteByHelper('relation','id=?', [id]);
@@ -40,13 +46,14 @@ void deleteSingle(int id) async{
   queryData();
 }
 
-void update(String _id, String _type, String _name, String _moneyValue, String _description) async{
+void update(String _id, String _type, String _title, String _notebook, String _position, String _time_modify) async{
   await dbUtil.open();
   Map<String,Object> par = Map<String,Object>();
   if(_type!=null){par['type']=_type;}
-  if(_name!=null){par['name']=_name;}
-  if(_moneyValue!=null){par['moneyValue']=_moneyValue;}
-  if(_description!=null){par['description']=_description;}
+  if(_title!=null){par['name']=_title;}
+  if(_notebook!=null){par['notebook']=_notebook;}
+  if(_position!=null){par['position']=_position;}
+  if(_time_modify!=null){par['time_modify']=_time_modify;}
   print(_id);
   dbUtil.updateByHelper('relation', par, 'id=?', [int.parse(_id)]);
   await dbUtil.close();
@@ -55,68 +62,37 @@ void update(String _id, String _type, String _name, String _moneyValue, String _
 
 void  queryData() async{
   await dbUtil.open();
-  List<Map> data = await dbUtil.queryList("SELECT * FROM relation");
+  List<Map> data = await dbUtil.queryList("SELECT * FROM relation WHERE type=0");
   print('data：$data');
   dataList = data;
   await dbUtil.close();
   return  ;
 }
-void queryOrderByTypePositive() async{
+void queryOrderCreatePositive() async{
   await dbUtil.open();
-  List<Map> data = await dbUtil.queryOrderByHelper("relation",["*"],null,null,null,'type ASC');
+  List<Map> data = await dbUtil.queryOrderByHelper("relation",["*"],null,null,null,'time_create ASC');
   print('data：$data');
   dataList = data;
   await dbUtil.close();
 }
-void queryOrderByTypeNegative() async{
+void queryOrderCreateNegative() async{
   await dbUtil.open();
-  List<Map> data = await dbUtil.queryOrderByHelper("relation",["*"],null,null,null,'type DESC');
+  List<Map> data = await dbUtil.queryOrderByHelper("relation",["*"],null,null,null,'time_create DESC');
   print('data：$data');
   dataList = data;
   await dbUtil.close();
 }
-void queryOrderByTimePositive() async{
+void queryOrderModifyPositive() async{
   await dbUtil.open();
-  List<Map> data = await dbUtil.queryOrderByHelper("relation",["*"],null,null,null,'time ASC');
+  List<Map> data = await dbUtil.queryOrderByHelper("relation",["*"],null,null,null,'time_modify ASC');
   print('data：$data');
   dataList = data;
   await dbUtil.close();
 }
-void queryOrderByTimeNegative() async{
+void queryOrderModifyNegative() async{
   await dbUtil.open();
-  List<Map> data = await dbUtil.queryOrderByHelper("relation",["*"],null,null,null,'time DESC');
+  List<Map> data = await dbUtil.queryOrderByHelper("relation",["*"],null,null,null,'time_modify DESC');
   print('data：$data');
   dataList = data;
-  await dbUtil.close();
-}
-void queryOrderByMoneyPositive() async{
-  await dbUtil.open();
-  List<Map> data = await dbUtil.queryOrderByHelper("relation",["*"],null,null,null,'moneyValue ASC');
-  print('data：$data');
-  dataList = data;
-  await dbUtil.close();
-}
-void queryOrderByMoneyNegative() async{
-  await dbUtil.open();
-  List<Map> data = await dbUtil.queryOrderByHelper("relation",["*"],null,null,null,'moneyValue DESC');
-  print('data：$data');
-  dataList = data;
-  await dbUtil.close();
-}
-void querygroupby() async{
-  await dbUtil.open();
-  dataGroupList=[];
-  List<Map> data = await dbUtil.queryOrderByHelper("relation",['type','SUM(moneyValue)'],null,null,'type',null);
-  print('data：$data');
-  dataGroupList.add({'type': 0,'SUM(moneyValue)': 0});
-  dataGroupList.add({'type': 1,'SUM(moneyValue)': 0});
-  dataGroupList.add({'type': 2,'SUM(moneyValue)': 0});
-  dataGroupList.add({'type': 3,'SUM(moneyValue)': 0});
-  print('dataGroupList：$dataGroupList');
-  for(int i=0;i<data.length;i++){
-    dataGroupList[data[i]['type']]['type']=data[i]['type'];
-    dataGroupList[data[i]['type']]['SUM(moneyValue)']=data[i]['SUM(moneyValue)'];
-  }
-  print('dataGroupList：$dataGroupList');
   await dbUtil.close();
 }

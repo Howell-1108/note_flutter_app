@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:note_flutter_app/AccountDB.dart';
 import 'package:note_flutter_app/AddNote.dart';
 import 'DrawerChart.dart';
 import 'dart:async';
@@ -28,15 +29,29 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> with SingleTickerProviderStateMixin {
 
+  StreamController _streamController = StreamController<List<Map>>();
+  Timer _timer;
+
+  Future getData() async {
+    //Add your data to stream
+    _streamController.add(dataList);
+  }
+
   @override
   void initState() {
     super.initState();
+    initDB();
+    getData();
+    queryData();
+    _timer = Timer.periodic(Duration(seconds: 2), (timer) => getData());
+   // queryData();
   }
   //初始化
 
   @override
   void dispose() {
     //controller.dispose();
+    if (_timer.isActive) _timer.cancel();
     super.dispose();
   }
   //关流
@@ -49,11 +64,23 @@ class _MyHomePageState extends State<MyHomePage> with SingleTickerProviderStateM
         appBar: AppBar(
           title: Text("Notebook"),
         ),
-        body: AddNote(),
+        body: StreamBuilder(
+          stream: _streamController.stream,
+          builder: (BuildContext context, AsyncSnapshot snapshot) {
+            if (snapshot.hasData)
+              return ListView(
+                children: snapshot.data.map<Widget>((document) {
+                  return ListTile(
+                    title: Text(document['title']),
+                    subtitle: Text(document['title']),
+                  );
+                }).toList(),
+              );
+            return Text('Loading...');
+          },
+        ),
         drawer: DrawerDemo(),
       ),
     );
   }
-
-
 }
