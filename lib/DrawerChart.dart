@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'AccountDB.dart';
 import 'Constants.dart';
+import 'HiddenPage.dart';
 
 //抽屉部分，主要功能待定
 class DrawerDemo extends StatefulWidget {
@@ -10,33 +11,33 @@ class DrawerDemo extends StatefulWidget {
 }
 
 class DrawerDemoState extends State<DrawerDemo> {
-  _openMessageDialog(){
-    showDialog(
-      context: context,
-      builder: (BuildContext context){
-        return AlertDialog(
-           title: Text("关于"),
-          content: Text("咱也没啥好说的好像XD"),
-          elevation: 9.0,
-          actions: <Widget>[
-            FlatButton(
-              child: Text('确定'),
-              onPressed: () {
-                Navigator.pop(context);
-              },
-            ),
-          ],
-        );
-      }
-    );
-  }
+  // _openMessageDialog(){
+  //   showDialog(
+  //     context: context,
+  //     builder: (BuildContext context){
+  //       return AlertDialog(
+  //          title: Text("关于"),
+  //         content: Text("咱也没啥好说的好像XD"),
+  //         elevation: 9.0,
+  //         actions: <Widget>[
+  //           FlatButton(
+  //             child: Text('确定'),
+  //             onPressed: () {
+  //               Navigator.pop(context);
+  //             },
+  //           ),
+  //         ],
+  //       );
+  //     }
+  //   );
+  // }
   _openAlertDialog() {
     showDialog(
         context: context,
         builder: (BuildContext context) {
           if (dataList.isEmpty) {
             return AlertDialog(
-              title: Text('账目已为空'),
+              title: Text('条目已为空'),
               actions: <Widget>[
                 FlatButton(
                   child: Text('确定'),
@@ -48,8 +49,8 @@ class DrawerDemoState extends State<DrawerDemo> {
             );
           } else {
             return AlertDialog(
-              title: Text('删除所有账目'),
-              content: Text('确定要删除所有账目吗'),
+              title: Text('删除所有记事本'),
+              content: Text('确定要删除所有记事本吗'),
               actions: <Widget>[
                 FlatButton(
                   child: Text('确定'),
@@ -105,32 +106,36 @@ class DrawerDemoState extends State<DrawerDemo> {
         children: <Widget>[
           UserAccountsDrawerHeader(
             //arrowColor: ,
-            accountName: Text("Howell", style: TextStyle(fontWeight: FontWeight.bold),),
-            accountEmail: Text("12341234@gmail.com",),
-            currentAccountPicture: CircleAvatar(
-              backgroundImage: NetworkImage("https://i.loli.net/2020/11/28/nCN5pGMgL43dtaV.jpg"),
-            ),
-            decoration: BoxDecoration(
-                color: Colors.blue,
-                image: DecorationImage(
-                  image: NetworkImage("https://i.loli.net/2020/11/28/6iQFU9mkgMdTJZo.jpg"),
-                  fit: BoxFit.cover,
-                  //colorFilter: ColorFilter.mode(Colors.yellow.withOpacity(0.5), BlendMode.hardLight),
-                )
-            ),
+            accountName: Text("长庚", style: TextStyle(fontWeight: FontWeight.bold),),
+            accountEmail: Text("2740594260@qq.com",),
+            // currentAccountPicture: CircleAvatar(
+            //   backgroundImage: Image.asset("images/user.jpg")
+            // ),
+            // decoration: BoxDecoration(
+            //     color: Colors.blue,
+            //     image: DecorationImage(
+            //       image: NetworkImage("https://i.loli.net/2020/11/28/6iQFU9mkgMdTJZo.jpg"),
+            //       fit: BoxFit.cover,
+            //       //colorFilter: ColorFilter.mode(Colors.yellow.withOpacity(0.5), BlendMode.hardLight),
+            //     )
+            // ),
           ),
           ListTile(
             title: Text(
-              "信息",
+              "要点进来噢",
               textAlign: TextAlign.left,
             ),
             leading:
             Icon(Icons.message, color: Colors.black26, size: 20.0),
-            onTap: ()=> _openMessageDialog(),
+            onTap: (){
+              Navigator.of(context).push(MaterialPageRoute(
+                  builder: (context) => HiddenPage()
+              ));
+            },
           ),
           ListTile(
             title: Text(
-              "删库跑路",
+              "清空",
               textAlign: TextAlign.left,
             ),
             leading:Icon(Icons.delete_forever, color: Colors.black26, size: 20.0,),
