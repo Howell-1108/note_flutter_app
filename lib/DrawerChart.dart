@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:note_flutter_app/TestPage.dart';
 import 'AccountDB.dart';
 import 'Constants.dart';
-import 'HiddenPage.dart';
 
 //抽屉部分，主要功能待定
 class DrawerDemo extends StatefulWidget {
@@ -39,6 +39,7 @@ class DrawerDemoState extends State<DrawerDemo> {
             return AlertDialog(
               title: Text('条目已为空'),
               actions: <Widget>[
+                // ignore: deprecated_member_use
                 FlatButton(
                   child: Text('确定'),
                   onPressed: () {
@@ -129,7 +130,8 @@ class DrawerDemoState extends State<DrawerDemo> {
             Icon(Icons.message, color: Colors.black26, size: 20.0),
             onTap: (){
               Navigator.of(context).push(MaterialPageRoute(
-                  builder: (context) => HiddenPage()
+                  builder: (context) => null()
+                  // builder: (context) => TestPage()
               ));
             },
           ),
